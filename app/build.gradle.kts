@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -83,5 +84,8 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")   // room Database
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+
+    implementation("com.google.dagger:hilt-android:2.44")   // hilt
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
 
 }

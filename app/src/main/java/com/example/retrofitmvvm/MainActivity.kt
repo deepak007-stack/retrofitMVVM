@@ -23,11 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import com.example.retrofitmvvm.db.PostDatabase
 import com.example.retrofitmvvm.model.PostItem
 import com.example.retrofitmvvm.repository.UserRepository
 import com.example.retrofitmvvm.ui.theme.RetrofitMVVMTheme
 import com.example.retrofitmvvm.viewmodels.MainViewModel
 import com.example.retrofitmvvm.viewmodels.MainViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
 class MainActivity : ComponentActivity() {
 
@@ -42,9 +44,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val repository = (application as PostApplication).repository
 
-                    val apiService = RetrofitReq.service
-                    val repository = UserRepository(apiService)
                     mainViewModel = ViewModelProvider(this,MainViewModelFactory(repository))[MainViewModel::class.java]
 
 //                    mainViewModel.post.observe(this, Observer{
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
                     val dataList by mainViewModel.post.observeAsState(initial = emptyList())
 
-                    MyList(dataList)
+                    dataList?.let { MyList(it) }
                 }
             }
         }
@@ -120,10 +121,7 @@ fun ShowItem(data: PostItem, modifier: Modifier = Modifier) {
 fun OnBoardingScreenPreview1() {
     RetrofitMVVMTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            val dummyData = PostItem(
-                "Dummy body", 1, "Dummy title", 123
-            )
-            ShowItem(data = dummyData)
+
         }
     }
 }
